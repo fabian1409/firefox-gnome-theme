@@ -16,7 +16,7 @@
 		--gnome-toolbar-star-button: var(--gnome-palette-yellow-1);
 
 		/* Window */
-		--gnome-window-background: #222226;
+		--gnome-window-background: #0f0f0f;
 		--gnome-window-color: white;
 		--gnome-view-background: #1e1e1e;
 		--gnome-sidebar-background: #2e2e32;
@@ -27,16 +27,21 @@
 		--gnome-card-shade-color: rgba(0, 0, 6, 0.36);
 
 		/* Menu */
-		--gnome-menu-background: #36363a;
+		--gnome-menu-background: #242424;
 
 		/* Header bar */
-		--gnome-headerbar-background: #2e2e32;
+		--gnome-headerbar-background: #0f0f0f;
 		--gnome-headerbar-shade-color: rgba(0, 0, 0, 0.9);
 
 		/* Toolbars */
 		--gnome-toolbar-icon-fill: #ffffff;
 
-		/* Tabs */		
+		/* Tabs */
+		--gnome-tabbar-tab-hover-background: #242424; /* Hardcoded color */
+		--gnome-tabbar-tab-active-background: #242424; /* Hardcoded color */
+		--gnome-tabbar-tab-active-background-contrast: #4F4F4F; /* Hardcoded color */
+		--gnome-tabbar-tab-active-hover-background: #242424; /* Hardcoded color */
+		
 		--gnome-tabbar-identity-color-green: var(--gnome-palette-green-1);
 		--gnome-tabbar-identity-color-yellow: var(--gnome-palette-yellow-2);
 		--gnome-tabbar-identity-color-orange: var(--gnome-palette-orange-3);
