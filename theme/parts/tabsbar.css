@@ -5,13 +5,15 @@
 /* Override vars */
 :root {
 	--space-above-tabbar: 0 !important;
-
+	--tab-inner-inline-margin: var(--gnome-toolbar-padding) !important;
+	--tab-pinned-margin-inline-expanded: calc(var(--gnome-toolbar-padding)  / 2) !important;
 	--tab-min-height: var(--gnome-button-size) !important;
 	--tab-border-radius: var(--gnome-button-radius) !important;	
 	--tab-hover-background-color: var(--gnome-hover-color) !important;
 	--tab-selected-bgcolor: var(--gnome-selected-color) !important;
 	--tab-pinned-container-margin-inline-expanded: calc(var(--gnome-toolbar-padding) / 2) !important;
 	--tabstrip-inner-border: 1px solid var(--gnome-border-color) !important;
+	--tab-height-with-margin-padding: calc(var(--tab-min-height) + 5px) !important;
 	
 	--gnome-tabbar-tab-close-overlay-bg: var(--gnome-tabbar-tab-hover-background);
 
@@ -20,6 +22,11 @@
 		--tab-hover-background-color: var(--gnome-tabbar-tab-hover-background) !important;
 		--tab-selected-bgcolor: var(--gnome-tabbar-tab-active-background) !important;
 	}
+	
+	@media -moz-pref("sidebar.verticalTabs") {
+		--tab-block-margin: calc(var(--gnome-toolbar-padding)  / 2) !important;
+	}
+	
 }
 
 /* Tabsbar */
@@ -77,18 +84,12 @@
 
 	/* Vertical */
 	&[orient="vertical"] {
+		--icon-size: 16px !important;
 		grid-gap: 0 !important;
-
-		&[expanded] {
-			--tab-inner-inline-margin: var(--gnome-toolbar-padding) !important;
-		}
-
-		#tabbrowser-arrowscrollbox-periphery > #tabs-newtab-button,
-		#vertical-tabs-newtab-button {
-			margin-inline: var(--gnome-toolbar-padding) !important;
-			margin-block: calc(var(--gnome-toolbar-spacing) / 2) !important;
-		}
 		
+		#vertical-tabs-newtab-button {
+			margin-block: calc(var(--gnome-toolbar-spacing) / 2) var(--gnome-toolbar-spacing) !important;
+		}		
 	}
 }
 
@@ -205,15 +206,17 @@ spacer[part=overflow-start-indicator], spacer[part=overflow-end-indicator] {
 
 			/* Full width tabs */
 			@media not -moz-pref("gnomeTheme.normalWidthTabs") {
-				&:not([style^="max-width"]):not([pinned]),
-				&[style^="max-width: 100px !important;"]:not([pinned]) {
-					max-width: 100% !important;
-					--tab-min-width-pref: 131px !important;
-				}
-				&:not([style^="max-width"]):not([pinned]):not([fadein]),
-				&[style^="max-width: 100px !important;"]:not([pinned]):not([fadein]) {
-					max-width: .1px !important;
-				}
+				&:not([pinned]) {
+					&:not([style^="max-width"]),
+					&[style^="max-width: 100px !important;"] {
+						max-width: 100% !important;
+						--tab-min-width-pref: 131px !important;
+					}
+					&:not([style^="max-width"]):not([fadein]),
+					&[style^="max-width: 100px !important;"]:not([fadein]) {
+						max-width: .1px !important;
+					}
+				}				
 			}
 		}
 	}
@@ -221,9 +224,6 @@ spacer[part=overflow-start-indicator], spacer[part=overflow-end-indicator] {
 	/* Vertical tabs only */
 	#tabbrowser-tabs[orient="vertical"] & {
 		padding-block: calc(var(--gnome-toolbar-spacing) / 2) !important;
-		&[pinned] {
-			padding-block: var(--gnome-toolbar-spacing) !important;	
-		}	
 	}
 }
 
@@ -232,6 +232,11 @@ spacer[part=overflow-start-indicator], spacer[part=overflow-end-indicator] {
 	box-shadow: none !important;
 	transition: background var(--gnome-tab-animation-time) linear !important;
 	margin-block: 0 !important;
+
+	/* Selected */
+	tab[selected] & {
+		background-color: var(--gnome-selected-color) !important;
+	}
 
 	/* Selected hover */
 	tab[selected]:hover & {
@@ -264,9 +269,9 @@ spacer[part=overflow-start-indicator], spacer[part=overflow-end-indicator] {
 }
 
 /* Tab content */
-.tab-content {
+.tab-content {	
 	#tabbrowser-tabs[orient="horizontal"] & {
-		/* Center content on horizontal tabs */
+		justify-content: center !important; /* Center content on horizontal tabs */
 		align-items: center !important;
 		justify-content: center !important;
 		margin-top: -1px;
@@ -338,6 +343,7 @@ spacer[part=overflow-start-indicator], spacer[part=overflow-end-indicator] {
 					margin-inline-end: auto !important;
 				}
 				.tab-close-button {
+					margin-inline-end: auto !important;
 					margin-inline-start: 0 !important;
 					order: 0 !important;
 				}
@@ -346,14 +352,6 @@ spacer[part=overflow-start-indicator], spacer[part=overflow-end-indicator] {
 				:root[dir="ltr"] &:not([pinned])::before {
 					display: none !important;
 				}
-		}
-	}
-	
-	#tabbrowser-tabs:not([expanded]) & {
-		#pinned-tabs-container[orient="vertical"] & {
-			@media not -moz-pref("sidebar.expandOnHover") {
-				justify-content: unset !important;
-			}
 		}
 	}
 }
@@ -444,13 +442,19 @@ spacer[part=overflow-start-indicator], spacer[part=overflow-end-indicator] {
 			}
 		}
 	}
+	
+	#tabbrowser-tabs[orient="vertical"]:not([expanded]) & {
+		padding: 2px !important;
+		top: -5px !important;
+		inset-inline-start: 0px !important;
+	}
 }
 
 /* Icon overlay */
 .tab-icon-overlay {
 	height: 12px !important;
 	left: 11px !important;
-	top: -3px !important;
+	top: -7px !important;
 	width: 12px !important;
 
 	&:not([crashed]) {
@@ -547,6 +551,33 @@ spacer[part=overflow-start-indicator], spacer[part=overflow-end-indicator] {
 	}
 }
 
+/* Split tabs */
+tab-split-view-wrapper {
+	padding: 0 !important;
+	margin-block: 0 !important;
+	margin-bottom: var(--gnome-toolbar-padding) !important;
+	
+	/* Horizontal tabs only */
+	#tabbrowser-tabs[orient="horizontal"] & {		
+		/* Not in collapsed tab-group */
+		:not([collapsed]) > & {
+			> .tabbrowser-tab  {
+				padding: 0 !important;
+				border: 0 !important;
+			}
+			
+			/* Full width tabs */
+			@media not -moz-pref("gnomeTheme.normalWidthTabs") {
+				&:not([style^="max-width"]) {
+					max-width: 100% !important;
+					--tab-min-width-pref: 131px !important;
+				}						
+			}
+		}
+	}
+}
+
+
 /* Tabs group */
 tab-group {
 	#tabbrowser-tabs[orient="horizontal"] & {
@@ -555,25 +586,27 @@ tab-group {
 			margin-inline: calc((var(--gnome-toolbar-spacing) / 2) * -1) !important;
 		}
 	}
-
-	#tabbrowser-tabs[orient="vertical"][expanded] & {
-		margin-inline-start: calc(var(--gnome-toolbar-padding) * 2) !important;
-		padding-inline-start: var(--tab-group-line-thickness);
-	}
 }
 
 .tab-group-label-container {
-	padding-bottom: var(--gnome-toolbar-padding);
+	padding-bottom: 0 !important;
 	
 	#tabbrowser-tabs[orient="vertical"][expanded] & {
 		margin-block: 0 !important;
 		margin-inline-start: calc(var(--tab-group-line-thickness) * -1);
-		
 	}
+	
 	#tabbrowser-tabs[orient="vertical"]:not([expanded]) & {
 		tab-group[collapsed] & {
 			margin-block: var(--gnome-toolbar-padding) !important;
 		}
+	}
+}
+
+.tab-group-label-hover-highlight {
+	tab-group[collapsed]:not([movingtabgroup]) &:hover, tab-group[previewpanelactive] {
+		background: none !important;
+		box-shadow: none !important;
 	}
 }
 

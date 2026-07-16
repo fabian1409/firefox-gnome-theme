@@ -1,4 +1,5 @@
 /* Buttons Issues/Glitches fixes */
+
 @namespace xul "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 
 /* moz.button size */
@@ -88,8 +89,12 @@ button.close {
 	margin: 0 !important;
 }
 
-/* */
+/* App menu buttons */
 #appMenu-popup .panel-banner-item[notificationid="update-restart"]::after {
+	display: none !important;
+}
+
+.remote-tabs-close-button .toolbarbutton-text {
 	display: none !important;
 }
 
@@ -187,7 +192,7 @@ button.close {
 
 /* Downloads button */
 #downloads-indicator-progress-inner {
-	background: conic-gradient(var(--gnome-toolbar-icon-fill) var(--download-progress-pcent), transparent var(--download-progress-pcent)) !important;
+	background: conic-gradient(currentColor var(--download-progress-pcent), transparent var(--download-progress-pcent)) !important;
 	background-color: var(--gnome-button-active-background) !important;
 }
 #downloads-indicator-progress-outer,
@@ -230,6 +235,14 @@ button.close {
 	transform: none !important;
 	list-style-image: none !important;
 	display: none !important;
+}
+
+/* Reload/stop button */
+#stop-reload-button[animate] {
+	> #reload-button > .toolbarbutton-icon,
+	> #reload-button[displaystop] + #stop-button > .toolbarbutton-icon {
+		fill: var(--gnome-window-color) !important;
+	}
 }
 
 /* Panel banner */
